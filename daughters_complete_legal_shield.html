@@ -1,0 +1,389 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.app{padding:1rem 0;font-family:var(--font-sans,sans-serif)}
+.top-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem}
+.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;text-align:center}
+.stat-n{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.stat-l{font-size:11px;color:var(--color-text-tertiary);margin-top:2px}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.filter-btn{font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer;transition:all .12s}
+.filter-btn.on{background:var(--color-background-info);color:var(--color-text-info);border-color:var(--color-border-info)}
+.filter-label{font-size:12px;color:var(--color-text-tertiary);margin-right:2px}
+.card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:10px;overflow:hidden;background:var(--color-background-primary)}
+.card-head{display:flex;align-items:center;gap:8px;padding:12px 14px;cursor:pointer;user-select:none}
+.card-head:hover{background:var(--color-background-secondary)}
+.cat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.card-title{font-size:13px;font-weight:500;color:var(--color-text-primary);flex:1;line-height:1.4}
+.sev{font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.sev-c{background:var(--color-background-danger);color:var(--color-text-danger)}
+.sev-h{background:var(--color-background-warning);color:var(--color-text-warning)}
+.sev-m{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.chev{font-size:11px;color:var(--color-text-tertiary);transition:transform .18s;flex-shrink:0}
+.chev.o{transform:rotate(180deg)}
+.card-body{display:none;border-top:0.5px solid var(--color-border-tertiary)}
+.card-body.o{display:block}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:0.5px solid var(--color-border-tertiary)}
+.grid4:last-child{border-bottom:none}
+.col{padding:10px 12px;border-right:0.5px solid var(--color-border-tertiary);min-width:0}
+.col:last-child{border-right:none}
+.col-head{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;padding:6px 12px;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+.col-head span{color:var(--color-text-tertiary)}
+.col-head.ch-law span{color:var(--color-text-info)}
+.col-head.ch-prev span{color:var(--color-text-success)}
+.col-head.ch-dur span{color:var(--color-text-warning)}
+.col-head.ch-post span{color:var(--color-text-primary)}
+.step{font-size:12px;color:var(--color-text-secondary);padding:4px 0 4px 14px;position:relative;line-height:1.5;border-bottom:0.5px solid var(--color-border-tertiary)}
+.step:last-child{border-bottom:none}
+.step::before{content:"›";position:absolute;left:0;font-weight:500}
+.step.law::before{color:var(--color-text-info)}
+.step.prev::before{color:var(--color-text-success)}
+.step.dur::before{color:var(--color-text-warning)}
+.step.post::before{color:var(--color-text-primary)}
+.step b{color:var(--color-text-primary);font-weight:500}
+.cat-header{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;padding:8px 14px;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary);border-top:0.5px solid var(--color-border-tertiary);color:var(--color-text-tertiary);display:flex;align-items:center;gap:6px;margin-top:6px}
+.cat-header:first-child{margin-top:0}
+.cat-dot-sm{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sos-bar{background:var(--color-background-danger);border:0.5px solid var(--color-border-danger);border-radius:var(--border-radius-md);padding:10px 14px;margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+.sos-bar p{font-size:12px;color:var(--color-text-danger);line-height:1.5}
+.sos-bar b{font-weight:500}
+.no-results{text-align:center;padding:2rem;font-size:13px;color:var(--color-text-tertiary)}
+.search-wrap{position:relative;margin-bottom:1rem}
+.search-wrap input{width:100%;padding:8px 12px 8px 32px;font-size:13px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary)}
+.search-wrap .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--color-text-tertiary)}
+.mobile-note{font-size:11px;color:var(--color-text-tertiary);text-align:center;margin-bottom:8px}
+</style>
+
+<div class="app">
+<h2 class="sr-only">Complete legal shield for your daughter — all situations, laws, and action steps</h2>
+
+<div class="sos-bar">
+<i class="ti ti-phone-call" style="font-size:20px;flex-shrink:0" aria-hidden="true"></i>
+<p><b>Emergency:</b> Police 112 &nbsp;|&nbsp; Women Helpline 181 &nbsp;|&nbsp; NCW 7827170170 &nbsp;|&nbsp; Free Legal Aid (NALSA) 15100</p>
+</div>
+
+<div class="top-bar">
+<div class="stat"><div class="stat-n" id="total-count">35</div><div class="stat-l">Total situations</div></div>
+<div class="stat"><div class="stat-n" style="color:var(--color-text-danger)">14</div><div class="stat-l">Critical / life-risk</div></div>
+<div class="stat"><div class="stat-n" style="color:var(--color-text-warning)">12</div><div class="stat-l">High severity</div></div>
+<div class="stat"><div class="stat-n">12+</div><div class="stat-l">Laws weaponised</div></div>
+</div>
+
+<div class="search-wrap">
+<i class="ti ti-search si" aria-hidden="true"></i>
+<input type="text" placeholder="Search any situation, law or keyword..." id="search-inp" oninput="filterAll()">
+</div>
+
+<div class="filters">
+<span class="filter-label">Category:</span>
+<button class="filter-btn on" onclick="setCatFilter('all',this)">All</button>
+<button class="filter-btn" onclick="setCatFilter('violence',this)" style="--dot:#E24B4A">Violence</button>
+<button class="filter-btn" onclick="setCatFilter('dowry',this)" style="--dot:#EF9F27">Dowry</button>
+<button class="filter-btn" onclick="setCatFilter('financial',this)" style="--dot:#1D9E75">Financial</button>
+<button class="filter-btn" onclick="setCatFilter('liberty',this)" style="--dot:#7F77DD">Liberty</button>
+<button class="filter-btn" onclick="setCatFilter('legal',this)" style="--dot:#D85A30">Legal foul play</button>
+<button class="filter-btn" onclick="setCatFilter('children',this)" style="--dot:#D4537E">Children</button>
+<button class="filter-btn" onclick="setCatFilter('divorce',this)" style="--dot:#378ADD">Divorce</button>
+<button class="filter-btn" onclick="setCatFilter('political',this)" style="--dot:#888780">Political abuse</button>
+</div>
+
+<div class="mobile-note">Tap any row to expand full legal steps</div>
+<div id="list"></div>
+</div>
+
+<script>
+const CAT={
+violence:{label:"Physical & sexual violence",color:"#E24B4A"},
+dowry:{label:"Dowry & cruelty",color:"#EF9F27"},
+financial:{label:"Financial abuse & assets",color:"#1D9E75"},
+liberty:{label:"Personal liberty & dignity",color:"#7F77DD"},
+legal:{label:"Legal foul play",color:"#D85A30"},
+children:{label:"Children & custody",color:"#D4537E"},
+divorce:{label:"Divorce & separation",color:"#378ADD"},
+political:{label:"Political & institutional abuse",color:"#888780"}
+};
+
+const DATA=[
+{cat:"dowry",sev:"c",title:"Dowry demand before marriage",
+laws:["Dowry Prohibition Act §3 §4","BNS §84","BNS §80"],
+prev:["Prepare notarised stridhan inventory with photos + valuations before marriage","Record ALL demands: WhatsApp, calls, meetings — metadata preserved in cloud","All gifts labelled 'voluntary stridhan' in writing — NEVER as response to demand","Appoint Dowry Prohibition Officer (DPO) complaint at district level proactively"],
+dur:["Do not comply with any demand under any pressure — compliance creates legal liability","File FIR under DPA §4 — demand alone is non-bailable cognisable offence","Contact Mahila Police Station simultaneously — harder for political families to influence","Get written acknowledgement of complaint from police, date-stamped"],
+post:["Preserve all evidence for BNS §84/§80 proceedings if harassment continues","Use stridhan inventory as exhibit in any future DV or divorce case","File DPA §3 case if any amount was given under duress — recovery is available"]},
+
+{cat:"dowry",sev:"c",title:"Dowry harassment after marriage (continuous demands)",
+laws:["BNS §84 (cruelty — non-bailable, 3 yrs)","PWDVA 2005 §3","Dowry Prohibition Act §3"],
+prev:["Stridhan inventory ready as pre-existing proof of all gifts given","Open independent bank account before marriage — document all deposits","Retain a lawyer on standby before marriage — brief them on political family background"],
+dur:["File FIR BNS §84 immediately — cognisable, police MUST register","Simultaneously file DV complaint with Protection Officer under PWDVA — covers economic + emotional abuse","Approach Magistrate directly under BNSS §173(4) if police stall due to political pressure","Preserve every WhatsApp/call/message demanding more — cloud backup daily"],
+post:["§84 FIR creates permanent criminal record for accused — limits their political careers","Seek monetary relief PWDVA §20 for all losses caused by harassment","File DPA §3 recovery suit for any amount given under duress during marriage"]},
+
+{cat:"violence",sev:"c",title:"Physical assault / domestic violence",
+laws:["PWDVA 2005 §3 §18 §19 §20","BNS §115 (grievous hurt)","BNS §109 (attempt to murder)","BNS §84 (cruelty)"],
+prev:["Know Protection Officer (PO) contact before marriage — every district has one","Know nearest Mahila Thana location — stored in phone","Keep a trusted neighbour/family member aware who can call police quickly","Maintain list of witnesses (household staff, neighbours) who can give statements"],
+dur:["Hospital MLC (Medico-Legal Certificate) FIRST even for minor injuries — skip this and you lose primary evidence","Photograph all injuries with timestamp before treatment","Call 112 + Women Helpline 181 simultaneously","File DV complaint with PO under PWDVA §3 — no lawyer required initially","PWDVA §18 Protection Order: prohibits husband from repeating, approaching, contacting — granted quickly","PWDVA §19 Residence Order: she CANNOT be thrown out of shared household — ever","PWDVA §20 Monetary Relief: court orders immediate financial support at first hearing"],
+post:["Pursue BNS §115/§109 FIR for severe assault — non-bailable, political pressure rarely works at Sessions level","Use MLC + photographs as exhibits in divorce proceedings for maximum alimony","Apply for permanent protection order after DV case resolution"]},
+
+{cat:"violence",sev:"c",title:"Attempt to murder / life threat",
+laws:["BNS §109 (attempt to murder — life imprisonment)","BNS §80 (dowry death — 7 yrs to life)","BNS §351 (criminal intimidation)","BNSS §144 (protective order)"],
+prev:["Document and report any prior threats to police IMMEDIATELY — creates official record","If serious threat: approach HC for anticipatory protection order before incident","Brief a senior advocate in advance to move HC on short notice"],
+dur:["File FIR BNS §109 immediately — non-bailable, mandatory arrest","If injured: MLC + dying declaration to Magistrate/doctor has highest evidentiary weight","File BNSS §144 application to DM/SDM for immediate protection order","File application opposing anticipatory bail for accused in court — political families move fast"],
+post:["BNS §80: if death occurs within 7 years of marriage — PRESUMPTION OF GUILT against husband + in-laws by default","NHRC + NCW complaint creates national-level scrutiny beyond local political control","SIT probe or CBI transfer can be sought via HC writ under Art. 226"]},
+
+{cat:"violence",sev:"c",title:"Marital rape / sexual coercion",
+laws:["PWDVA §3 (sexual abuse — explicit)","BNS §64 (rape)","BNS §70 (gang rape)","Constitution Art. 21 (right to dignity)"],
+prev:["Understand PWDVA §3 explicitly covers all forms of sexual abuse within marriage","Keep contact of trusted women doctor for confidential examination","Know: any sexual act without free consent is abuse — document from first occurrence"],
+dur:["Hospital examination IMMEDIATELY — do not bathe/change clothes before examination","MLC from hospital, report to female doctor/police officer where possible","File DV complaint under PWDVA §3 — sexual abuse is a standalone ground, no physical violence needed","File BNS §64 FIR — courts increasingly protect under Art. 21 dignity right"],
+post:["HC writ if police refuse action — courts have upheld marital rape protection under Art. 21","Psychiatrist assessment of psychological impact strengthens DV case + divorce grounds","Document pattern of coercion for divorce on grounds of cruelty — maximises alimony"]},
+
+{cat:"violence",sev:"h",title:"Mental / emotional / psychological torture",
+laws:["BNS §84 (mental cruelty — explicitly covered)","PWDVA §3(b) (emotional / verbal abuse)"],
+prev:["Begin keeping a private dated diary from day 1 of marriage — encrypted or physical in secure location","Save all humiliating messages, public insults, threats — cloud backup"],
+dur:["PWDVA §3(b) — verbal abuse, insults, humiliation, threats all qualify without physical violence","BNS §84 — mental cruelty equals physical cruelty in law; file FIR","Get psychiatrist assessment — clinical diagnosis significantly strengthens case","Witness affidavits from servants/neighbours who observe behaviour — get these BEFORE political pressure is applied"],
+post:["Psychiatrist certificate = key exhibit in divorce for cruelty + alimony maximisation","Contemporaneous diary entries admitted as evidence (Supreme Court precedent)","PWDVA monetary relief §20 covers psychological harm-related losses"]},
+
+{cat:"dowry",sev:"c",title:"Stridhan / jewellery seized by in-laws or husband",
+laws:["BNS §303 (criminal breach of trust — 7 yrs)","BNS §318 (cheating)","Supreme Court — Pratibha Rani v Suraj Kumar 1985","Hindu law — stridhan is absolute property"],
+prev:["Notarised stridhan inventory with photos, valuations, witness signatures BEFORE marriage","Video record all gifting at engagement + wedding ceremonies — show who gives what to whom","Store copies of inventory in bank locker + cloud — husband cannot access"],
+dur:["File FIR BNS §303 immediately — misappropriating wife's stridhan = criminal breach of trust","Simultaneously file civil suit for recovery of stridhan with inventory as exhibit","Apply for court injunction to prevent sale/transfer of jewellery pending trial — court can freeze assets","Report to local police + send legal notice simultaneously"],
+post:["Court can order return of stridhan or equivalent monetary value","Stridhan recovery is available even AFTER divorce — no time bar under Supreme Court precedent","If stridhan sold: civil suit for full value + damages including appreciation in gold price"]},
+
+{cat:"financial",sev:"c",title:"Financial strangulation — money withheld, no access to funds",
+laws:["PWDVA §3(d) (economic abuse — specific category)","BNSS §144 (maintenance — fastest route)","HMA §24 (interim maintenance)"],
+prev:["Maintain INDEPENDENT bank account in daughter's name only throughout marriage","Do not add husband as joint holder or give him net banking access — ever","Keep 3–6 months emergency funds accessible only to her"],
+dur:["PWDVA §3(d) — economic abuse: denying money, preventing employment, disposing property — all covered","File DV complaint under §3(d) — Protection Officer can grant immediate monetary relief","BNSS §144 Magistrate maintenance — fastest remedy, granted within days, husband faces imprisonment for default","HMA §24 interim maintenance in divorce proceedings — applies from first hearing"],
+post:["Recover all losses caused by economic abuse under PWDVA §20","BNSS §144(5) maintenance can be backdated to date of application","Apply for upward revision if husband's income increases — court orders are not final on quantum"]},
+
+{cat:"financial",sev:"c",title:"Forced to sign property documents / power of attorney",
+laws:["Contract Act §19 (consent obtained by coercion is voidable)","BNS §340 (forgery)","BNS §318 (cheating by coercion)"],
+prev:["NEVER sign any document presented by in-laws without independent lawyer reviewing it first","Know: any signature under duress is legally voidable under Indian Contract Act §19","Brief lawyer in advance — they can be called to review documents within hours"],
+dur:["Refuse to sign until independent lawyer reviews — this is an absolute right","If forced: immediately write to concerned authority (bank/registrar/RTO) withdrawing consent","File BNS §340 (forgery) + §318 (cheating) FIR","Contact Sub-Registrar if property document — registered documents signed under duress can be challenged"],
+post:["File suit for declaration that document is void — executed under coercion","Section 17 Registration Act: fraudulent documents can be declared void by court","Civil suit for damages for any loss suffered due to fraudulently obtained signature"]},
+
+{cat:"financial",sev:"h",title:"Benami property / concealed wealth to avoid alimony",
+laws:["Benami Transactions (Prohibition) Act 1988","Income Tax Act §271AAB","CPC Order 39 (discovery and inspection)","HMA §25 (full asset disclosure)"],
+prev:["During marriage: document visible lifestyle, assets, political connections — preserves evidence for later","PI hired before marriage to document known assets — baseline for future comparison"],
+dur:["Court-ordered financial disclosure in matrimonial proceedings — husband must file asset list under oath","False declaration = perjury (BNS §229) — serious liability that deters political families","Subpoena IT returns, bank statements, property records through court"],
+post:["File Benami Act complaint with Income Tax / Enforcement Directorate — government investigation uncovers assets","RTI on land records — property transactions are public, searchable at Sub-Registrar office","Hire forensic accountant — courts increasingly accept forensic evidence of concealed matrimonial wealth","Alimony revision application at any time if new income discovered"]},
+
+{cat:"financial",sev:"h",title:"In-laws occupy or transfer daughter's gifted property",
+laws:["Transfer of Property Act","Hindu Succession Act 1956 (amended 2005)","BNS §303 (criminal breach of trust)"],
+prev:["All property gifted to daughter: registered in HER name only at Sub-Registrar","Power of attorney over her property: she should NEVER give this to in-laws or husband","Keep original title deeds in her bank locker — not in marital home"],
+dur:["File injunction application in civil court — court can stay any transfer immediately","File BNS §303 FIR if property misappropriated","Inform Sub-Registrar in writing of disputed title — prevents fraudulent registration"],
+post:["File suit for possession + damages + mesne profits (rent equivalent) for unlawful occupation","Partition suit if property transferred to HUF — daughter's share is protected under HSA 2005","Court can order attachment and restoration of property pending trial"]},
+
+{cat:"liberty",sev:"c",title:"Wrongful confinement / not allowed to leave house",
+laws:["BNS §126 (wrongful confinement — enhanced punishment beyond 3 days)","Constitution Art. 21 (personal liberty)","PWDVA §3 (physical abuse includes confinement)"],
+prev:["Inform a trusted person outside the house of your location daily — establish a check-in routine","Keep phone charged and accessible — have a trusted contact on speed dial","Know: no one can legally prevent you from leaving your own home"],
+dur:["Habeas Corpus petition to High Court — most powerful and fastest remedy (24–48 hrs)","Call Women Helpline 181 — they can dispatch police for immediate rescue","BNS §126 FIR — wrongful confinement beyond 3 days = enhanced cognisable offence","PWDVA §3 DV complaint simultaneously"],
+post:["HC habeas corpus cannot be overridden by political influence — most reliable remedy","BNS §126 criminal case creates permanent record, deters future repetition","Seek residence order PWDVA §19 confirming her right to return to shared household"]},
+
+{cat:"liberty",sev:"c",title:"Passport / documents seized to prevent escape",
+laws:["Passports Act 1967","BNS §126 (wrongful confinement)","BNS §340 (fraudulent use of documents)"],
+prev:["Daughter should carry her own passport and keep a photocopy elsewhere","All original documents (educational, property, identity) stored in her own bank locker"],
+dur:["Write to Regional Passport Office — RPO can issue fresh passport without prior passport under prescribed circumstances","File police complaint for confiscation of passport — cognisable offence","BNS §126 + PWDVA DV complaint simultaneously","HC writ for direction to police to recover documents"],
+post:["Tatkal passport reissuance available with police complaint as supporting document","All confiscated original documents: court order for return + FIR under BNS §340","Travel abroad: apply for Emergency Certificate from Indian Embassy if passport not recovered in time"]},
+
+{cat:"liberty",sev:"h",title:"Isolation from parents / family / friends",
+laws:["PWDVA §3(b) (emotional abuse includes isolation)","BNS §351 (criminal intimidation)"],
+prev:["Establish regular contact schedule with parents BEFORE marriage — make it a known routine","Do NOT move to remote location without independent phone access and regular contact plan","Parents should visit frequently especially in first year of marriage"],
+dur:["PWDVA §3(b) explicitly covers isolation tactics as emotional abuse — file DV complaint","If phone taken: borrow phone from neighbour, reach out to parents/lawyer immediately","BNS §351 criminal intimidation FIR if threats used to cut contact"],
+post:["Court can include contact with family as a condition in protection order under PWDVA","Isolation pattern strengthens mental cruelty ground for divorce + alimony","Witness statements from blocked family members are valuable evidence"]},
+
+{cat:"liberty",sev:"h",title:"Defamation / character assassination / social media attack",
+laws:["BNS §356 (defamation — civil + criminal)","IT Act §66C §66D (online fraud + impersonation)","BNS §351 (criminal intimidation)"],
+prev:["Document all public interactions with in-laws/husband on social media — screenshot + archive","Private social media settings — do not share sensitive personal information online","Know: any false public statement harming reputation = criminal + civil defamation"],
+dur:["Screenshots with metadata (date, URL, account details) — preserve within minutes of seeing","BNS §356 criminal complaint — defamation is cognisable when affecting professional reputation","Civil defamation suit for monetary damages simultaneously","IT Act complaint for online harassment/impersonation to Cyber Crime Cell"],
+post:["Court can order public retraction + damages — political families are highly sensitive to this","Caste panchayat / khap orders are unconstitutional — HC writ petition + BNS complaint","Apology decree from civil court creates permanent public record of false accusation"]},
+
+{cat:"liberty",sev:"h",title:"Forced abortion / reproductive coercion",
+laws:["BNS §88 (causing miscarriage without consent — 7 yrs)","MTP Act (consent of woman alone required)","PWDVA §3 (sexual/physical abuse)","Constitution Art. 21 (bodily autonomy)"],
+prev:["Know: abortion requires written informed consent of woman ONLY — husband has zero legal veto","Any doctor performing abortion without sole consent of woman = criminal negligence + BNS §88"],
+dur:["Refuse consent clearly in writing if pressured — written refusal is critical evidence","File BNS §88 FIR immediately — cognisable, serious offence","PWDVA §3 sexual/physical abuse complaint simultaneously","Complaint to State Medical Council against any doctor involved"],
+post:["BNS §88 case creates major criminal liability — effective deterrent against future coercion","NCW complaint creates national scrutiny","Civil suit for psychological and physical damages"]},
+
+{cat:"legal",sev:"c",title:"FIR refused by police (political pressure)",
+laws:["BNSS §173(4) (Magistrate complaint order)","Supreme Court — Lalita Kumari 2014 (mandatory FIR)","Art. 226 HC Writ","NHRC / NCW complaint"],
+prev:["Brief lawyer before marriage — they can file HC writ within hours if police stall","Know: for any cognisable offence police CANNOT refuse FIR — Lalita Kumari 2014 is binding","Prepare written complaint with full details ready to send to multiple authorities simultaneously"],
+dur:["Go to SP/DCP directly with written complaint — demand written acknowledgement with date and time","BNSS §173(4): send complaint directly to Magistrate — Magistrate orders police to register FIR","HC writ Art. 226 — court directs DGP, bypasses all local political influence","NCW online complaint — ncwapps.nic.in — creates national-level accountability"],
+post:["HC orders are binding on police regardless of political connections","Court-monitored investigation (magistrate supervision) prevents evidence tampering","SIT / CBI transfer of investigation possible through HC — remove local influence entirely"]},
+
+{cat:"legal",sev:"c",title:"False counter-cases filed against daughter or her family",
+laws:["BNS §229 (false evidence — 7 yrs)","BNS §226 (fabricating evidence)","BNSS §528 (quashing malicious FIR in HC)"],
+prev:["Anticipatory bail application to HC BEFORE false FIR — file as soon as threat is credible","Brief senior advocate in advance — their appearance in court deters political abuse","Maintain complete alibi documentation, call records, CCTV footage proactively"],
+dur:["BNSS §528 quashing petition in HC immediately — malicious FIR can be quashed before trial begins","Collect alibi: call records, cell tower data, CCTV, witness statements — preserve with forensic timestamps","Apply for transit bail + anticipatory bail across relevant states if family travels"],
+post:["File BNS §229 + §226 counter-complaint against those who filed false cases","Malicious prosecution civil suit for damages — courts award substantial compensation","Quashing order in HC establishes permanent record of malicious prosecution — valuable for future proceedings"]},
+
+{cat:"legal",sev:"h",title:"Tampering with marriage registration / denial of marriage",
+laws:["Hindu Marriage Act §8","Registration Act","BNS §466 (forgery of valuable security)","Supreme Court — Seema v. Ashwani Kumar 2006"],
+prev:["Register marriage at SDM/Registrar IMMEDIATELY within 60 days — Supreme Court directive","Certified copies of marriage certificate: lawyer's safe, bank locker, cloud — minimum 3 copies","Video record of ceremony with multiple witnesses named and identifiable"],
+dur:["If denial attempted: present certified marriage certificate + video evidence + witnesses","File BNS §466 (forgery of official record) FIR if registration tampered","Approach Sub-Registrar in writing with complaint + HC writ for record correction"],
+post:["Court declaration of valid marriage available — cannot be undone by political power","Marriage registration is a government record — falsification is a serious criminal offence","All matrimonial rights (maintenance, alimony, property) flow from court declaration even if registry is disputed"]},
+
+{cat:"legal",sev:"h",title:"Tampering with evidence / bribing witnesses",
+laws:["BNS §229 (false evidence)","BNS §227 (using fabricated evidence)","BNS §61 (abetment of bribery)"],
+prev:["Notarise witness statements BEFORE political pressure can be applied — early action critical","Cloud-back up all digital evidence immediately — political families are known to deploy hackers","Submit key evidence to court or police early to create official custody record"],
+dur:["File BNS §229/§227 FIR against persons tampering with evidence","Apply for court-supervised evidence preservation order — court takes custody of key documents","Request Magistrate recording of witness statements under BNSS §183 — creates judicial record that is harder to tamper with"],
+post:["Statements already on court record cannot be withdrawn or tampered with","Apply for in-camera proceedings if witness safety is a concern","Hostile witness procedure: if witness turns hostile, cross-examine on prior statements — prior statements before police/court remain on record"]},
+
+{cat:"legal",sev:"h",title:"Misuse of mutual consent divorce to strip rights",
+laws:["HMA §13B (mutual consent divorce — 6 month cooling period)","BNSS §144 (maintenance)","HMA §24 (interim maintenance during proceedings)"],
+prev:["NEVER sign mutual consent divorce papers under pressure without full legal advice","Understand: mutual consent divorce extinguishes right to future maintenance unless explicitly settled in deed","Insist on full financial settlement BEFORE signing anything — stridhan + alimony + property share explicitly documented"],
+dur:["Withdraw consent within 6-month cooling period of HMA §13B at any time before decree","File for maintenance under BNSS §144 immediately on separation — creates independent right","Do not accept settlement without independent lawyer reviewing every clause"],
+post:["If pressured into signing: challenge decree as obtained under coercion — Contract Act §19","Any settlement agreement must be filed with court to be enforceable — oral promises mean nothing","File enforcement petition if settlement not honoured within 30 days of decree"]},
+
+{cat:"divorce",sev:"c",title:"Husband files for divorce to escape liability / dump wife",
+laws:["HMA §13 (divorce grounds)","HMA §24 (interim maintenance from first hearing)","HMA §25 (permanent alimony — full asset disclosure)"],
+prev:["Before marriage: understand all grounds for divorce — cruelty, adultery, desertion","Stridhan inventory + evidence of harassment is already being built — ready for divorce proceedings","Lawyer already briefed and on standby — can file counter-petition same day"],
+dur:["File HMA §24 interim maintenance application IMMEDIATELY on receiving divorce notice — do not wait","Contest divorce — force husband to prove grounds in court","File counter-claim for divorce on cruelty grounds — if she gets divorce on cruelty finding, alimony is maximised","Demand full financial disclosure of all assets under court order"],
+post:["HMA §25 permanent alimony: court considers actual income including undisclosed political/business income","Benami properties, HUF assets, political income all considered under court-ordered discovery","Court can order one-time settlement in property if husband has land/real estate — more secure than monthly payments"]},
+
+{cat:"divorce",sev:"h",title:"Alimony / maintenance defaulted or refused",
+laws:["BNSS §144 (Magistrate maintenance — imprisonment for default)","HMA §25","CPC Order 21 (execution of decree)"],
+prev:["Always apply for maintenance under BOTH BNSS §144 (Magistrate) AND HMA §24/25 (civil court) — dual track","Request lump sum settlement wherever possible — monthly payments depend on continued compliance"],
+dur:["BNSS §144(12): apply for warrant of arrest if payment defaulted — even political persons can be arrested","CPC Order 21: attachment of salary, bank accounts, property for execution of maintenance decree","Garnishee order against employer to deduct salary directly and pay to her"],
+post:["Imprisonment for wilful default — highly effective even against political families","Property attachment sale in execution — court-auctioned sale of attached property to recover arrears","Upward revision application if husband's income increases — maintenance is not permanently fixed"]},
+
+{cat:"divorce",sev:"h",title:"Post-divorce denial of property and financial settlement",
+laws:["HMA §27 (disposal of property in divorce decree)","Hindu Succession Act 2005","CPC Order 21 (execution)"],
+prev:["Ensure all property settlement terms explicitly incorporated in divorce decree — verbal agreements mean nothing","Stridhan recovery claim filed before divorce finalised — becomes part of decree"],
+dur:["Execution petition under CPC Order 21 for any order not complied with","Contempt of court application if court order flouted — effective even against politically connected persons","Attachment before judgment for moveable property at risk of being transferred/concealed"],
+post:["Court receiver appointment to take custody of disputed property during execution","Contempt of court proceedings — fine + imprisonment, cannot be politically shielded","Appeal to HC if lower court order is inadequate — matrimonial cases are heard sympathetically at HC level"]},
+
+{cat:"children",sev:"c",title:"Children taken away / abducted by in-laws",
+laws:["BNS §136-137 (kidnapping from lawful guardianship)","Guardians & Wards Act 1890","PWDVA §21 (temporary custody)","Habeas Corpus"],
+prev:["Register children's birth with mother as primary guardian in all school/medical records","Keep children's passports, birth certificates, school records in HER custody — not marital home","Notify school in writing that children cannot be taken by named persons without her consent"],
+dur:["Habeas Corpus petition in HC immediately — children produced within 24-48 hrs","File BNS §136 kidnapping FIR simultaneously — police must act","PWDVA §21 — Magistrate can grant immediate temporary custody to mother within DV proceedings","Alert airport authorities / FRRO if international abduction risk — children can be flagged on departure"],
+post:["Hindu Minority & Guardianship Act: mother has natural guardianship of children under 5","'Best interests of child' doctrine: wealth/political power of father's family NOT automatically determinative","Document all parenting involvement: photographs, school records, medical records — key evidence in custody proceedings"]},
+
+{cat:"children",sev:"h",title:"Children used as leverage / emotional blackmail",
+laws:["PWDVA §3(b) (emotional abuse through children)","Guardians & Wards Act §17","HMA §26 (children's welfare orders)"],
+prev:["Keep open, age-appropriate communication with children — they should trust mother","Document all parenting activity with dates — regular photographic record","Court-ordered custody/access arrangements provide structure that prevents weaponisation"],
+dur:["PWDVA §3(b): using children as tool for emotional abuse is covered domestic violence","HMA §26 application for interim custody and access schedule — removes ambiguity","File for visitation schedule order — clear court-mandated schedule prevents leverage"],
+post:["Permanent custody order with defined access schedule — political family cannot arbitrarily deny or withhold access","Court's 'best interests' test weighs primary caregiver heavily — documented parenting involvement is critical","Contempt of court for any breach of custody/visitation order — immediate remedy"]},
+
+{cat:"children",sev:"h",title:"Children's education / maintenance withheld",
+laws:["HMA §26 (education and maintenance of children)","Guardians & Wards Act","BNSS §144 (children's maintenance)"],
+prev:["File for children's maintenance as separate application from wife's maintenance — independent right","Open education savings (Sukanya Samriddhi for daughters, PPF) in children's names only — cannot be accessed by husband"],
+dur:["HMA §26 application for children's education expenses, medical costs, maintenance as separate order","Attachment of husband's salary/accounts for children's maintenance enforcement if defaulted","LIC policies in children's names nominated to grandmother — secured even if husband defaults"],
+post:["Court order for children's expenses includes school fees, medical, extracurricular — all separately itemised","Hindu Succession Act 2005: children's share in ancestral property cannot be disinherited","Trust deed for children's assets — beyond reach of political family's financial manipulation"]},
+
+{cat:"political",sev:"c",title:"Police inaction / investigation sabotaged by political influence",
+laws:["Art. 226 HC Writ","Supreme Court — Lalita Kumari 2014","BNSS §173(4) Magistrate complaint","NHRC / NCW complaint"],
+prev:["Senior advocate retained before marriage — can file HC writ within 12 hours of need","Complaints always sent to multiple authorities simultaneously — SP, DCP, Magistrate, NCW","Keep complaint copies with timestamps — prevents denial of receipt"],
+dur:["Complaint to SP/DCP in writing with acknowledgement receipt — demand written response within 7 days","BNSS §173(4): Magistrate ordered investigation bypasses police — most effective against political stalling","HC Art. 226 writ: court can direct DGP, order SIT probe, transfer to CBI — overrides all local political influence","NCW + NHRC parallel complaints — national scrutiny creates accountability trail beyond local politics"],
+post:["SIT probe under HC supervision eliminates local political influence entirely","CBI transfer: when state police influenced, HC can transfer investigation to CBI","Court-monitored investigation with status reports — prevents case burial"]},
+
+{cat:"political",sev:"c",title:"Threats / intimidation by political family's goons",
+laws:["BNS §351 (criminal intimidation — cognisable)","BNS §352 (anonymous threats)","BNSS §144 (preventive detention order)","IPC §149 analog: BNS (unlawful assembly)"],
+prev:["Install CCTV at parents' home and daughter's residence — visual evidence of goons visiting","All threats: preserve immediately with metadata — voice recordings by threatened person are admissible","Brief police station with written complaint even before incident if threat is credible"],
+dur:["BNS §351 FIR — cognisable offence, police MUST register and investigate","BNSS §144 order from DM/SDM: prohibits accused from approaching — violation = immediate arrest","HC writ for police protection if local police stall — court-ordered police protection cannot be withdrawn by political pressure","NCW emergency intervention for immediate protection"],
+post:["Named persons in intimidation FIR cannot easily seek anticipatory bail given BNS §351 gravity","Pattern of intimidation strengthens overall DV + cruelty case","Media exposure as last resort: political families are most vulnerable to credible documented exposure"]},
+
+{cat:"political",sev:"h",title:"Pressure on daughter's parents / family",
+laws:["BNS §351 (criminal intimidation)","BNS §195A (threatening to implicate falsely)","BNS §117 (voluntarily causing hurt to extort)"],
+prev:["Parents file anticipatory bail application if false counter-cases threatened","Prepare written complaint signed by parents documenting specific threats with dates","Brief a criminal lawyer for parents' protection simultaneously"],
+dur:["File BNS §351 FIR for threats against parents — separate cognisable case","BNS §195A FIR if threatening to implicate parents in false cases — cognisable, serious offence","BNSS §144 order for parents' protection from DM/SDM"],
+post:["Multiple simultaneous criminal cases against political family members deplete their legal resources","Cases in different courts (criminal + civil + HC writ) are impossible to fully control politically","HC contempt jurisdiction over any court order — safest post-order protection"]},
+
+{cat:"political",sev:"h",title:"Caste panchayat / khap orders against daughter",
+laws:["Constitution Art. 14 Art. 21","SC — Shakti Vahini v Union of India 2018","BNS §351 §115"],
+prev:["Know: any panchayat order against constitutional rights is illegal — zero legal force","SC 2018: state governments must prevent and punish honour crimes and khap orders","Report any anticipated panchayat meeting to police and HC in advance"],
+dur:["HC writ petition immediately — courts have repeatedly struck down khap orders as unconstitutional","File BNS §351 + §115 FIR against persons implementing or enforcing panchayat order","Seek police protection order from HC — cannot be refused even by politically connected police"],
+post:["Shakti Vahini SC 2018: SHO of area is personally liable if harm occurs after warning — creates accountability","Contempt of court against anyone enforcing an order after HC stay","NCW + NHRC complaints create national-level record — deters recurrence"]},
+
+{cat:"political",sev:"h",title:"Husband uses political position to influence courts",
+laws:["Art. 226 HC Writ","Contempt of Courts Act 1971","Supreme Court transfer petition"],
+prev:["File all important cases in HC/Sessions Court where local political influence is minimal","Engage senior advocate with high court standing — signals case significance","Document any instance of attempted court influence — these are contempt proceedings"],
+dur:["Transfer petition to Supreme Court if fair trial cannot be guaranteed at HC level","Contempt of Courts Act: any direct interference with court proceedings by politician = criminal contempt","Media spotlight on high-profile cases limits judicial influence — preserve this option"],
+post:["Transfer case to neutral district / HC bench far from political influence area","SC oversight through writ petition or SLP creates insulation from local political interference","Court-monitored case with regular updates to SC/HC registry — safest structure for high-profile cases"]},
+
+{cat:"divorce",sev:"h",title:"Husband takes second wife / bigamy",
+laws:["HMA §11 (bigamy = void marriage)","BNS §82 (bigamy — 7 yrs imprisonment)","HMA §13(1)(i) (adultery as divorce ground)"],
+prev:["Demand groom's affidavit: no prior subsisting marriage — notarised before marriage","Background check including checking if any prior marriage in groom's records"],
+dur:["BNS §82 FIR for bigamy — serious cognisable offence, up to 7 years, non-bailable","HMA §11: second marriage is void ab initio — second wife has no legal status","File for divorce immediately on ground of adultery/bigamy — maximum alimony guaranteed"],
+post:["Bigamy conviction creates permanent criminal record — ends political career","Alimony in bigamy divorce cases: courts award substantial amounts given severity of breach of trust","Second wife can also be directed to vacate shared household under HMA"]},
+
+{cat:"dowry",sev:"c",title:"Dowry death / suspicious death within 7 years of marriage",
+laws:["BNS §80 (dowry death — 7 yrs to life + presumption of guilt)","BNS §103 (murder)","Evidence Act — presumption of guilt inverted"],
+prev:["Document all dowry harassment BEFORE death — FIRs, DV complaints, MLC records create crucial chain of evidence","These prior complaints are the primary exhibit in dowry death prosecution"],
+dur:["BNS §80: if wife dies within 7 years under suspicious circumstances — PRESUMPTION is that husband and in-laws caused death","File FIR BNS §80 + §103 immediately","Demand independent post mortem — request presence of government doctor + family-appointed doctor","Preserve all prior harassment evidence, letters, messages — they become primary prosecution exhibits"],
+post:["NHRC complaint + NCW complaint for independent monitoring","SIT probe via HC — prevents local police from suppressing investigation","Compensation under PWDVA can be claimed by parents of deceased wife for her estate"]}
+];
+
+let catFilter='all', searchQ='';
+
+function setCatFilter(c, btn){
+  catFilter=c;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderAll();
+}
+
+function filterAll(){
+  searchQ=document.getElementById('search-inp').value.toLowerCase();
+  renderAll();
+}
+
+function renderAll(){
+  const list=document.getElementById('list');
+  const cats=Object.keys(CAT);
+  let html='';
+  let shown=0;
+
+  const grouped={};
+  cats.forEach(c=>{grouped[c]=[];});
+
+  DATA.forEach(item=>{
+    const catOk=catFilter==='all'||item.cat===catFilter;
+    const q=searchQ;
+    let textOk=true;
+    if(q){
+      const blob=[item.title,...item.laws,...item.prev,...item.dur,...item.post].join(' ').toLowerCase();
+      textOk=blob.includes(q);
+    }
+    if(catOk&&textOk){grouped[item.cat].push(item);}
+  });
+
+  cats.forEach(c=>{
+    if(!grouped[c].length)return;
+    const ci=CAT[c];
+    html+=`<div class="cat-header"><span class="cat-dot-sm" style="background:${ci.color}"></span><span>${ci.label}</span></div>`;
+    grouped[c].forEach((item,i)=>{
+      shown++;
+      const id=c+'_'+i;
+      const sevCls=item.sev==='c'?'sev-c':item.sev==='h'?'sev-h':'sev-m';
+      const sevLbl=item.sev==='c'?'Critical':item.sev==='h'?'High':'Medium';
+      html+=`<div class="card">
+<div class="card-head" onclick="toggleCard('${id}')">
+<span class="cat-dot" style="background:${ci.color}"></span>
+<span class="card-title">${item.title}</span>
+<span class="sev ${sevCls}">${sevLbl}</span>
+<span class="chev" id="chev_${id}">▼</span>
+</div>
+<div class="card-body" id="body_${id}">
+<div style="display:grid;grid-template-columns:repeat(2,1fr)">
+<div><div class="col-head ch-law"><span>Applicable laws & sections</span></div><div class="col">${item.laws.map(l=>`<div class="step law"><b>${l}</b></div>`).join('')}</div></div>
+<div><div class="col-head ch-prev"><span>Prevention / preparation steps</span></div><div class="col">${item.prev.map(s=>`<div class="step prev">${s}</div>`).join('')}</div></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);border-top:0.5px solid var(--color-border-tertiary)">
+<div><div class="col-head ch-dur"><span>During / present-stage steps</span></div><div class="col">${item.dur.map(s=>`<div class="step dur">${s}</div>`).join('')}</div></div>
+<div><div class="col-head ch-post"><span>After / post-stage steps</span></div><div class="col">${item.post.map(s=>`<div class="step post">${s}</div>`).join('')}</div></div>
+</div>
+</div>
+</div>`;
+    });
+  });
+
+  if(!shown){html='<div class="no-results">No situations match your search. Try a different keyword.</div>';}
+  document.getElementById('total-count').textContent=shown;
+  list.innerHTML=html;
+}
+
+function toggleCard(id){
+  const body=document.getElementById('body_'+id);
+  const chev=document.getElementById('chev_'+id);
+  const open=body.classList.toggle('o');
+  chev.classList.toggle('o',open);
+}
+
+renderAll();
+</script>
